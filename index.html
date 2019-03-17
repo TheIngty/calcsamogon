@@ -1,0 +1,143 @@
+<html>
+  <head>
+    <style>
+      *{
+        margin: 0px;
+        padding 0px;
+      }
+      body{
+        background: #000;
+        color: #fc0;
+        text-align: center;
+      }
+      table{
+        margin-left:auto;
+        margin-right:auto;
+      }
+      .l{
+        text-align: right;
+      }
+      .r{
+        text-align: left;
+      }
+      input[type=text],button,select{
+        width: 100px;
+        border: #fc0 1px solid;
+        border-radius: 8px;
+        background: #000;
+        margin: 1px;
+        color: #fc0;
+      }
+      input[type=text][disabled]{
+        border: #f80 1px solid;
+        color: #f80;
+      }
+      input{
+        padding-left: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Kalkulator wlasnych liquidow</h1>
+    <table>
+      <tr>
+        <td id="l">Ilosc bazy:</td>
+        <td id="r"><input type="text" id="iloscbazy"/></td>
+      </tr>
+      <tr>
+        <td id="l">Moc bazy:</td>
+        <td id="r"><input type="text" id="mocbazy"/></td>
+      </tr>
+      <tr>
+        <td id="l">Cena bazy za 100ml:</td>
+        <td id="r"><input type="text" id="cenabazy"/></td>
+      </tr>
+      <tr>
+        <td id="l">Ilosc shotow:</td>
+        <td id="r"><input type="text" id="iloscshotow"/></td>
+      </tr>
+      <tr>
+        <td id="l">Moc shotow</td>
+        <td id="r"><select id="mocshotow">
+          <option id="3">3mg</option>
+          <option id="6">6mg</option>
+          <option id="12">12mg</option>
+          <option id="18">18mg</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td id="l">Ilosc roznych aromatow:</td>
+        <td id="r"><input type="text" id="iloscaromatow"/></td>
+      </tr>
+      <tr>
+        <td id="l">Cena aromatu za sztuke:</td>
+        <td id="r"><input type="text" id="cenaaromatow"/></td>
+      </tr>
+      <tr>
+        <td id="l">Zuzyte aromaty w ml:</td>
+        <td id="r"><input type="text" id="mlaromatow"/></td>
+      </tr>
+      <tr>
+        <td id="l">Finalna ilosc liquidu</td>
+        <td id="r"><input type="text" id="finalilosclq" disabled/></td>
+      </tr>
+      <tr>
+        <td id="l">Przyblizona moc liquidu</td>
+        <td id="r"><input type="text" id="finalmoclq" disabled/></td>
+      </tr>
+      <tr>
+        <td id="l">Calkowita cena</td>
+        <td id="r"><input type="text" id="cenacalkowita" disabled/></td>
+      </tr>
+      <tr>
+        <td id="l">Cena za litr</td>
+        <td id="r"><input type="text" id="cenacalkowitalitr" disabled/></td>
+      </tr>
+    </table>
+    <button onClick="calc()">Oblicz</button>
+    <script>
+      function calc(){
+      var iloscbazy = parseFloat(document.getElementById("iloscbazy").value);
+      var mocbazy = parseInt(document.getElementById("mocbazy").value);
+      var cenabazy = parseFloat(document.getElementById("cenabazy").value);
+      var cenabazyml = cenabazy/iloscbazy;
+      var iloscbaz = iloscbazy/100;
+      var iloscshotow = parseInt(document.getElementById("iloscshotow").value);
+      var tempmoc = 0;
+      var cenashota = 0;
+      var iloscaromatow = parseInt(document.getElementById("iloscaromatow").value);
+      var cenaaromatow = parseFloat(document.getElementById("cenaaromatow").value);
+      var moc = document.getElementById("mocshotow").value;
+      var mlaromatow = parseFloat(document.getElementById("mlaromatow").value);
+      if(moc=="18mg"){
+        cenashota = 3.6;
+        tempmoc = 18;
+      }
+      else if(moc=="12mg"){
+        cenashota = 3.2;
+        tempmoc = 12;
+      }
+      else if(moc=="6mg"){
+        cenashota = 2.7;
+        tempmoc = 6;
+      }
+      else if(moc=="3mg"){
+        cenashota = 2.4;
+        tempmoc = 3;
+      }
+
+
+      var cena = (cenabazyml * iloscbazy * Math.ceil(iloscbaz) + iloscshotow * cenashota + iloscaromatow * cenaaromatow);
+      document.getElementById("cenacalkowita").value = cena.toFixed(2);
+      var ilosclq = iloscbazy + iloscshotow * 10 + mlaromatow;
+      document.getElementById("finalilosclq").value = ilosclq;
+      var tempcalc = 1000/ilosclq;
+      var cenalitr = cena * tempcalc;
+      document.getElementById("cenacalkowitalitr").value = cenalitr.toFixed(2);
+      var calkowitamoc = (((iloscshotow * 10) * tempmoc)+(iloscbazy * mocbazy))/ilosclq;
+      document.getElementById("finalmoclq").value = calkowitamoc.toFixed(2);
+
+    }
+    </script>
+  </body>
+</html>
